@@ -46,4 +46,8 @@ export class TripService {
       );
     }
   }
+
+  async getAllTripsByUserId(userId: string): Promise<Trip[]> {
+    return await this.prisma.trip.findMany({ where: { ownerId: userId } });
+  }
 }

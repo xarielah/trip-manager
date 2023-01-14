@@ -40,6 +40,11 @@ class TripHandler {
     });
   }
 
+  @Get("/all/:id")
+  async getAllTripsByUserId(@Param("id") userId: string) {
+    return await this.tripService.getAllTripsByUserId(userId);
+  }
+
   @Get("/:id")
   async getTripById(
     @Param("id") tripId: string,

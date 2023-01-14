@@ -30,7 +30,7 @@ export class JwtService {
   }
 
   async sign(payload: any): Promise<string> {
-    return jwt.sign(payload, this.jwtSecret, { expiresIn: "1h" });
+    return jwt.sign(payload, this.jwtSecret, { expiresIn: "7d" });
   }
 
   async verify(token: string): Promise<any> {

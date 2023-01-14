@@ -52,7 +52,6 @@ const LoginPage = () => {
       dispatch(setUser(response.data));
       router.push("/client-area");
     } catch (error) {
-      // const errorCode = (error as any)?.response?.status;
       setErrorMessage((error as any).response?.data?.message);
     }
   };

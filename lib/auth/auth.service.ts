@@ -1,4 +1,8 @@
-import { ConflictException, UnauthorizedException } from "next-api-decorators";
+import {
+  ConflictException,
+  SetHeader,
+  UnauthorizedException,
+} from "next-api-decorators";
 import * as argon2 from "argon2";
 import { RegisterDto } from "./dto/register.dto";
 import { LoginDto } from "./dto/login.dto";
@@ -52,7 +56,7 @@ export class AuthService {
         };
 
         const accessToken = await this.jwtService.sign(payload);
-        return { accessToken: accessToken };
+        return { accessToken: accessToken, payload };
       } else {
         throw new UnauthorizedException("Bad username or password.");
       }

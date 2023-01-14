@@ -10,40 +10,50 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Rule {
+  USER
+  ADMIN
+}
+
 model User {
-  id       String @id() @default(uuid())
-  username String @unique()
-  password String
-  email    String @unique()
-  trips    Trip[]
+  id        String   @id() @default(uuid())
+  createdAt DateTime @default(now())
+  username  String   @unique()
+  password  String
+  email     String   @unique()
+  trips     Trip[]
+  rule      Rule     @default(USER)
 }
 
 model Trip {
   id         String     @id() @default(uuid())
+  createdAt  DateTime   @default(now())
   name       String     @unique()
   startDate  DateTime
   endDate    DateTime
   country    String
   activities Activity[]
-  owner      User       @relation(fields: [ownerId], references: [id])
+  owner      User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   ownerId    String
 }
 
 model ActivityType {
   id          String     @id() @default(uuid())
+  createdAt   DateTime   @default(now())
   name        String     @unique()
   color       String
   description String
-  activity    Activity[]
+  activities  Activity[]
 }
 
 model Activity {
   id         String       @id() @default(uuid())
+  createdAt  DateTime     @default(now())
   name       String
   comment    String?
   targetDate DateTime?
   type       ActivityType @relation(fields: [typeId], references: [id])
   typeId     String
-  trip       Trip         @relation(fields: [tripId], references: [id])
+  trip       Trip         @relation(fields: [tripId], references: [id], onDelete: Cascade)
   tripId     String
 }

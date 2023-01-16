@@ -1,5 +1,15 @@
-const Button = (props: any) => {
-  const { className, isLoading, ...rest } = props;
+import { ButtonHTMLAttributes } from "react";
+
+interface IButtonProps {
+  isLoading?: boolean;
+  bgColor?: string;
+  bgHover?: string;
+}
+
+const Button = (
+  props: ButtonHTMLAttributes<HTMLButtonElement> & IButtonProps
+) => {
+  const { className, bgHover, isLoading, bgColor, value, ...rest } = props;
 
   const loadingContent = (
     <>
@@ -27,10 +37,14 @@ const Button = (props: any) => {
   return (
     <button
       disabled={isLoading}
-      className={`btn flex items-center ${className ?? ""}`}
+      className={`${bgColor ? bgColor : "bg-teal-800"} hover:${
+        bgHover ? bgHover : "bg-teal-900"
+      } px-4 shadow-md py-2 h-max ease-in-out duration-300 flex items-center justify-center ${
+        className ?? ""
+      }`}
       {...rest}
     >
-      {isLoading ? loadingContent : props.value}
+      {isLoading ? loadingContent : value}
     </button>
   );
 };

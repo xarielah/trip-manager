@@ -2,17 +2,17 @@ import { ReactNode } from "react";
 import NavigationBar from "../header/navbar";
 
 interface IMainLayout {
-  children: ReactNode;
+  children: ReactNode | ReactNode[];
 }
 
 const MainLayout = ({ children }: IMainLayout) => {
   return (
-    <main className="w-screen">
+    <>
       <header>
         <NavigationBar />
       </header>
-      {children}
-    </main>
+      <main className="app">{children}</main>
+    </>
   );
 };
 

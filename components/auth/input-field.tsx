@@ -1,15 +1,5 @@
 import React, { useState } from "react";
-import { RefCallBack } from "react-hook-form";
-
-// const InputField = React.forwardRef(function InputField(props, ref) {
-//   return (
-//     <input
-//       ref={ref}
-//       className="border-[1px] border-slate-400/20 rounded-md px-6 py-4 focus:outline-slate-600/20 text-xl"
-//       {...props}
-//     />
-//   );
-// });
+import type { RefCallBack } from "react-hook-form";
 
 interface IInputFieldProps {
   reference: RefCallBack;

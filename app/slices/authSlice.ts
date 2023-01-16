@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
-type AuthState = {
+export type AuthState = {
   username: string | null;
   email: string | null;
 };

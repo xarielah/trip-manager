@@ -12,6 +12,8 @@ import FormRequestError from "../../components/auth/form-request-error";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../app/slices/authSlice";
+import * as cookie from "cookie";
+import { setCookie, TOKEN_COOKIE_NAME } from "../../service/cookie.service";
 
 const schema = yup
   .object({
@@ -49,7 +51,15 @@ const LoginPage = () => {
           setLoadingState(false);
         });
 
-      dispatch(setUser(response.data));
+      setCookie(TOKEN_COOKIE_NAME, response.data.accessToken);
+
+      dispatch(
+        setUser({
+          username: response.data.username,
+          email: response.data.email,
+        })
+      );
+
       router.push("/client-area");
     } catch (error) {
       setErrorMessage((error as any).response?.data?.message);

@@ -1,7 +1,7 @@
 const Home = () => {
   return (
-    <section className="min-h-screen flex justify-center items-center">
-      <h1 className="uppercase text-6xl md:text-8xl font-bold">
+    <section className="app flex justify-center items-center">
+      <h1 className="uppercase text-6xl md:text-8xl font-bold mb-20">
         Plan.
         <br />
         Your.

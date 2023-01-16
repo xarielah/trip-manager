@@ -24,17 +24,21 @@ class AuthHandler {
     const { payload, accessToken } = await this.authService.handleLogin(
       loginDto
     );
-    const cookieString = cookie.serialize("token", accessToken, {
-      httpOnly: true,
-      secure: true,
-      maxAge: 60 * 60 * 24 * 7,
-      path: "/",
-      sameSite: "strict",
-      domain: process.env.BASE_URL ?? "http://localhost:3000",
-    });
 
-    res.setHeader("Set-Cookie", cookieString);
-    return { username: payload.username, email: payload.email };
+    // const cookieString = cookie.serialize("token", accessToken, {
+    //   maxAge: 60 * 60 * 24 * 7,
+    //   path: "/",
+    //   sameSite: "strict",
+    //   domain: process.env.BASE_URL ?? "http://localhost:3000",
+    // });
+    // `token=${accessToken};MaxAge=${
+    //   60 * 60 * 24 * 7
+    // };Path="/";SameSite=strict;Domain=${
+    //   process.env.BASE_URL ?? "http://localhost:3000"
+    // }`;
+
+    // res.setHeader("Set-Cookie", cookieString);
+    return { username: payload.username, email: payload.email, accessToken };
   }
 
   @Post("/register")
@@ -42,24 +46,6 @@ class AuthHandler {
     @Body(ValidationPipe) registerDto: RegisterDto
   ): Promise<any> {
     return this.authService.handleRegister(registerDto);
-  }
-
-  @Post("/logout")
-  logoutHandler(@Res() res: NextApiResponse): void {
-    /**
-     * This will send an HttpOnly cookie that is already expired.
-     * Expiration set to 1969, therefore the browser will remove the cookie.
-     */
-    const logoutCookieString = cookie.serialize("token", "", {
-      httpOnly: true,
-      secure: true,
-      expires: new Date(0),
-      path: "/",
-      sameSite: "strict",
-      domain: process.env.BASE_URL ?? "http://localhost:3000",
-    });
-    res.setHeader("Set-Cookie", logoutCookieString);
-    res.status(200).json({ message: "Logged out successfully" });
   }
 }
 

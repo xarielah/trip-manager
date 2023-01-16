@@ -8,7 +8,7 @@ const NavigationBar = () => {
   const currentUser = useSelector(selectCurrentUser);
 
   return (
-    <nav className="p-8 flex justify-between w-full fixed">
+    <nav className="p-8 flex justify-between w-full">
       <Link href="/">
         <Image
           src="/images/airplane.svg"
@@ -18,7 +18,9 @@ const NavigationBar = () => {
         />
       </Link>
       {currentUser.username ? (
-        <Button value={`Logged as ${currentUser.username}`} />
+        <Link href="/client-area">
+          <Button value={`Logged as ${currentUser.username}`} />
+        </Link>
       ) : (
         <Link href="/auth/login">
           <Button value={"Get Started"} />

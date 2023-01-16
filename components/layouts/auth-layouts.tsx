@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { ReactNode } from "react";
 
 interface IAuthLayout {
-  children: React.ReactNode;
+  children: ReactNode | ReactNode[];
 }
 
 const AuthPageLayout = ({ children }: IAuthLayout) => {

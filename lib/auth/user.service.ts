@@ -26,7 +26,7 @@ export class UserService {
     return this.prisma.user.update({ data, where });
   }
 
-  async getByUserToken(token: string): Promise<any> {
+  async getByUserToken(token: string): Promise<User | null> {
     const jwtPayload = await this.jwtService.getPayload(token);
     return this.prisma.user.findUnique({
       where: { username: jwtPayload.username },

@@ -14,11 +14,12 @@ body {
 }
 
 .app {
-  @apply flex items-center justify-center;
+  min-height: calc(100vh - 114px);
+  /* @apply flex items-center justify-center; */
 }
 
 .btn {
-  @apply bg-teal-800 px-4 shadow-md py-2 h-max ease-in-out duration-300;
+  @apply bg-teal-800 hover:bg-teal-900 px-4 shadow-md py-2 h-max ease-in-out duration-300;
 }
 
 .btn:disabled {
@@ -27,4 +28,53 @@ body {
 
 input {
   @apply text-slate-800 font-bold;
+}
+
+.main-form-header {
+  @apply text-6xl font-bold my-12 text-center;
+}
+
+/* SVG Animation for form validty */
+.svg {
+  display: block;
+  width: 100px;
+  margin: 4rem auto;
+}
+
+.svg .check {
+  stroke: #cc181e; /*red*/
+  stroke: green; /*blue*/
+  fill: none;
+  stroke-width: 12;
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: check 0.75s linear forwards;
+}
+
+.svg .box {
+  stroke: #cc181e; /*red*/
+  stroke: green; /*blue*/
+  stroke-width: 12;
+  fill: none;
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: draw 1s linear forwards;
+}
+
+@keyframes draw {
+  0% {
+    stroke-dashoffset: -400;
+  }
+  100% {
+    stroke-dashoffset: 400;
+  }
+}
+
+@keyframes check {
+  0% {
+    stroke-dashoffset: -400;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
 }

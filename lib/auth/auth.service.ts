@@ -1,5 +1,6 @@
 import {
   ConflictException,
+  InternalServerErrorException,
   SetHeader,
   UnauthorizedException,
 } from "next-api-decorators";
@@ -23,16 +24,29 @@ export class AuthService {
    * @returns user data or error.
    */
   async handleRegister(registerDto: RegisterDto): Promise<any> {
-    const hashedPassword = await argon2.hash(registerDto.password);
+    const areExisting = await this.userService.getUserByEmailOrUsername(
+      registerDto.username,
+      registerDto.email
+    );
+
+    if (areExisting && areExisting.length > 0)
+      throw new ConflictException("Username or email must be unique");
 
     try {
+      const hashedPassword = await argon2.hash(registerDto.password);
+
+      // These lines handle the confirmPassword field so that it would not get into the handler.
+      const sanitizeData = { ...registerDto };
+      delete (sanitizeData as any).confirmPassword;
+
       const newUser = await this.userService.create({
-        ...registerDto,
+        ...sanitizeData,
         password: hashedPassword,
       });
       return newUser;
     } catch (error) {
-      throw new ConflictException("Username or email must be unique");
+      console.log(error);
+      throw new InternalServerErrorException();
     }
   }
 

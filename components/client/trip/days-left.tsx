@@ -17,10 +17,11 @@ const DaysLeft = (props: IDaysLeftProps) => {
     }
   };
 
-  if (!daysLeft || daysLeft <= 0) return <></>;
-  else
-    return (
-      <div className="flex flex-col space-y-3 justify-center items-center text-8xl font-bold">
+  return (
+    <div className="flex flex-col space-y-3 justify-center items-center text-8xl font-bold">
+      {!daysLeft || daysLeft <= 0 ? (
+        ""
+      ) : (
         <div
           className={`${formatColor(
             daysLeft
@@ -28,11 +29,16 @@ const DaysLeft = (props: IDaysLeftProps) => {
         >
           {daysLeft}
         </div>
-        <h1 className="text-3xl text-gray-800 px-3 py-1 shadow bg-white">
-          Days Left
-        </h1>
-      </div>
-    );
+      )}
+      <h1
+        className={`text-3xl text-gray-800 px-3 py-1 shadow bg-white ${
+          !daysLeft || daysLeft < 0 ? "text-blue-600 italic" : ""
+        }`}
+      >
+        {!daysLeft || daysLeft < 0 ? "Date Passed" : "Days Left"}
+      </h1>
+    </div>
+  );
 };
 
 export default DaysLeft;

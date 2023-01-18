@@ -26,6 +26,21 @@ export class UserService {
     return this.prisma.user.update({ data, where });
   }
 
+  /**
+   * Fetching from database users that answer the criteria.
+   * @param username username string.
+   * @param email email string.
+   * @returns array of users.
+   */
+  async getUserByEmailOrUsername(
+    username: string,
+    email: string
+  ): Promise<User[]> {
+    return this.prisma.user.findMany({
+      where: { OR: [{ username, email }, { email: email }] },
+    });
+  }
+
   async getByUserToken(token: string): Promise<User | null> {
     const jwtPayload = await this.jwtService.getPayload(token);
     const foundUser = await this.prisma.user.findUnique({

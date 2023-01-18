@@ -1,5 +1,6 @@
 import { Activity, ActivityType } from "@prisma/client";
 import { useEffect, useState } from "react";
+import ActivityCard from "./activity-card";
 
 export type ActivityPayload = Activity & {
   type: ActivityType;
@@ -61,15 +62,10 @@ const ActivitiesTab = (props: IActivityTabProps) => {
         </span>
       ))}
       <div className="border-2 border-teal-800 p-6">
+        {/* //! This should be moved into separate component */}
         {indexedData.length > 0 ? (
-          indexedData[currentIndex].map((activity, index) => (
-            <div
-              key={activity.name + "_act" + index}
-              className="bg-white p-8 text-gray-800 rounded-sm my-8 shadow"
-            >
-              <h1 className="text-3xl">{activity.name}</h1>
-              <p className="text-gray-600">{activity.comment}</p>
-            </div>
+          indexedData[currentIndex].map((activity) => (
+            <ActivityCard activity={activity} key={activity.id} />
           ))
         ) : (
           <>No data to display</>

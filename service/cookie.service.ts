@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import type { CookieAttributes } from "js-cookie";
 
-export const TOKEN_COOKIE_NAME = "j_id";
+const TOKEN_COOKIE_NAME = "j_id";
 
 const setCookie = (name: string, value: string): void => {
   const expirationDate = new Date().setDate(new Date().getDate() + 7);
@@ -15,8 +15,12 @@ const setCookie = (name: string, value: string): void => {
   Cookies.set(name, value, cookieOptions);
 };
 
-const removeCookie = (name: string): void => {
+const removeCookie = (name: string, stateAction?: () => any): void => {
   Cookies.remove(name);
+
+  if (stateAction) {
+    stateAction();
+  }
 };
 
 const getCookie = (name: string): string | undefined => {
@@ -27,4 +31,4 @@ const getCookie = (name: string): string | undefined => {
   }
 };
 
-export { setCookie, removeCookie, getCookie };
+export { setCookie, removeCookie, getCookie, TOKEN_COOKIE_NAME };

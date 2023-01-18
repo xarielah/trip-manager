@@ -4,6 +4,7 @@ const nextConfig = {
   env: {
     BASE_URL: process.env.BASE_URL,
     JWT_SECRET: process.env.JWT_SECRET,
+    REDIS_URL: process.env.REDIS_URL,
   },
 };
 

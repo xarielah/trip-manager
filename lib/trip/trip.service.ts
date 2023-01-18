@@ -9,12 +9,16 @@ import { autoInjectable } from "tsyringe";
 import trip from "../../pages/api/trip/[[...params]]";
 import { UserService } from "../auth/user.service";
 import { PrismaService } from "../prisma.service";
+import { RedisService } from "../redis.service";
 import { RelationQuery } from "../types/relation-query.type";
 import { TripDto } from "./dto/trip.dto";
 
 @autoInjectable()
 export class TripService {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private redisService: RedisService
+  ) {}
   private prisma = PrismaService;
 
   /**
@@ -96,9 +100,22 @@ export class TripService {
 
       if (foundUser && authUser) {
         if (foundUser.id === authUser.id || foundUser.rule === "ADMIN") {
-          return await this.prisma.trip.findMany({
-            where: { ownerId: foundUser.id },
-          });
+          const fetcher = async () => {
+            return this.prisma.trip.findMany({
+              where: { ownerId: foundUser.id },
+            });
+          };
+
+          /**
+           * Fetch function checks for hit/miss on cache
+           * And by thats sets / retrieves data from cache storage.
+           */
+          const cachedData = this.redisService.fetch<Promise<Trip[]>>(
+            `${foundUser.username}_${foundUser.id}`,
+            fetcher
+          );
+
+          return cachedData;
         } else {
           throw new UnauthorizedException();
         }
@@ -121,6 +138,11 @@ export class TripService {
 
     if (foundUser && foundTrip) {
       if (foundUser.id === foundTrip.ownerId) {
+        /**
+         * If a user makes a changes on their data, delete any cached data,
+         * stored on that user so it'll be cached again on their next call.
+         */
+        await this.redisService.del(`${foundUser.username}_${foundUser.id}`);
         await this.prisma.trip.delete({ where: tripId });
       } else {
         throw new UnauthorizedException();

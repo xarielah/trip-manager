@@ -28,8 +28,11 @@ export class UserService {
 
   async getByUserToken(token: string): Promise<User | null> {
     const jwtPayload = await this.jwtService.getPayload(token);
-    return this.prisma.user.findUnique({
+    const foundUser = await this.prisma.user.findUnique({
       where: { username: jwtPayload.username },
     });
+
+    if (foundUser) return foundUser;
+    else return null;
   }
 }

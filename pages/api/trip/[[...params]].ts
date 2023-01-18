@@ -32,13 +32,9 @@ class TripHandler {
     @Header("Authorization") token: string
   ): Promise<Trip> {
     const user = await this.userService.getByUserToken(token);
-    if (user) {
-      return await this.tripService.createNewTrip({
-        ...tripDto,
-        startDate: new Date(tripDto.startDate),
-        endDate: new Date(tripDto.endDate),
-        ownerId: user.id,
-      });
+    console.log("🚀 ~ file: [[...params]].ts:35 ~ TripHandler ~ user", user);
+    if (user !== null) {
+      return await this.tripService.createNewTrip(tripDto, user, token);
     } else {
       throw new BadRequestException();
     }

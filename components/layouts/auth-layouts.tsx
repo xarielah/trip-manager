@@ -11,7 +11,7 @@ const AuthPageLayout = ({ children }: IAuthLayout) => {
 
   return (
     <section className="min-h-screen w-screen flex justify-center items-center flex-col">
-      <article className="border-[1px] bg-teal-900/10 border-slate-300/20 rounded-sm p-12 w-3/4 md:w-1/2 xl:w-1/4">
+      <article className="border-[1px] bg-teal-900/10 border-slate-300/20 rounded-sm p-12 max-w-[90%] md:w-1/2 xl:w-1/4 -mt-36">
         {children}
       </article>
       <p className="mt-5">

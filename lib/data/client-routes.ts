@@ -8,7 +8,7 @@ export const clientRoutes: ClientRoutes = [
     link: `${BASE_CLIENT_URL}/trip`,
   },
   {
-    label: "Create Trips",
+    label: "New Trip",
     link: `${BASE_CLIENT_URL}/trip/new`,
   },
 ];

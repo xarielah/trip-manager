@@ -1,4 +1,8 @@
-import React, { useState } from "react";
+import React, {
+  HTMLInputTypeAttribute,
+  InputHTMLAttributes,
+  useState,
+} from "react";
 import type { RefCallBack } from "react-hook-form";
 
 interface IInputFieldProps {
@@ -9,7 +13,7 @@ const InputField = ({
   reference,
   type,
   ...restProps
-}: IInputFieldProps & any) => {
+}: InputHTMLAttributes<HTMLInputElement> & IInputFieldProps) => {
   const [showState, setShowState] = useState<boolean>(false);
   return (
     <div className="relative">

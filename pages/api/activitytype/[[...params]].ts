@@ -16,7 +16,7 @@ import { UtilService } from "../../../lib/util.service";
 @autoInjectable()
 class ActivityTypeHandler {
   constructor(
-    private activtyTypeService: ActivityTypeService,
+    private activityTypeService: ActivityTypeService,
     private utilService: UtilService
   ) {}
 
@@ -29,14 +29,14 @@ class ActivityTypeHandler {
      * Only admins can create Activity Types.
      */
     this.utilService.relationQuery(relationQuery);
-    return await this.activtyTypeService.getAllActivityTypes(relationQuery);
+    return await this.activityTypeService.getAllActivityTypes(relationQuery);
   }
 
   @Post()
   async createNewActivityType(
     @Body(ValidationPipe) actType: ActivityTypeDto
   ): Promise<ActivityType> {
-    return this.activtyTypeService.createNewActivityType(actType);
+    return this.activityTypeService.createNewActivityType(actType);
   }
 }
 

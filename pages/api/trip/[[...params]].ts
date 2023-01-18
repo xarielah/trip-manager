@@ -1,6 +1,5 @@
 import { Trip } from "@prisma/client";
 import {
-  BadRequestException,
   Body,
   createHandler,
   Delete,
@@ -9,6 +8,7 @@ import {
   Param,
   Post,
   Query,
+  UnauthorizedException,
   ValidationPipe,
 } from "next-api-decorators";
 import { autoInjectable } from "tsyringe";
@@ -32,12 +32,9 @@ class TripHandler {
     @Header("Authorization") token: string
   ): Promise<Trip> {
     const user = await this.userService.getByUserToken(token);
-    console.log("🚀 ~ file: [[...params]].ts:35 ~ TripHandler ~ user", user);
-    if (user !== null) {
-      return await this.tripService.createNewTrip(tripDto, user, token);
-    } else {
-      throw new BadRequestException();
-    }
+    if (!user || user === null) throw new UnauthorizedException();
+
+    return await this.tripService.createNewTrip(tripDto, user, token);
   }
 
   @Get("/all/:id")

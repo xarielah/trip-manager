@@ -28,7 +28,7 @@ export class RedisService {
    */
   async set<T>(key: string, fetcher: () => T, expires: number): Promise<T> {
     const data = await fetcher();
-    console.log("I'm from your database");
+
     await this.redisClient.set(
       key,
       JSON.stringify(data),
@@ -44,7 +44,7 @@ export class RedisService {
    * @param {String} key string.
    */
   async del(key: string): Promise<void> {
-    this.redisClient.del(key);
+    await this.redisClient.del(key);
   }
 
   /**
@@ -62,5 +62,13 @@ export class RedisService {
     const existing = await this.get<T>(key);
     if (existing !== null) return existing;
     return this.set(key, fetcher, expires);
+  }
+
+  async repopulate<T>(key: string, data: any): Promise<void> {
+    const existing = await this.get<T>(key);
+
+    if (existing !== null) {
+      await this.redisClient.set(key, JSON.stringify(data), "EX", DEFAULT_TTL);
+    }
   }
 }

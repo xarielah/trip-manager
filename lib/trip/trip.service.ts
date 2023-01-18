@@ -1,4 +1,4 @@
-import { Prisma, Trip } from "@prisma/client";
+import { Prisma, Trip, User } from "@prisma/client";
 import {
   BadRequestException,
   ForbiddenException,
@@ -26,8 +26,29 @@ export class TripService {
    * @param data data object.
    * @returns {Trip} trip object.
    */
-  async createNewTrip(data: Prisma.TripCreateManyInput): Promise<Trip> {
-    return this.prisma.trip.create({ data });
+  async createNewTrip(
+    tripDto: TripDto,
+    user: User,
+    token: string
+  ): Promise<Trip> {
+    const data: Prisma.TripCreateManyInput = {
+      name: tripDto.name,
+      country: tripDto.country,
+      startDate: new Date(tripDto.startDate),
+      endDate: new Date(tripDto.endDate),
+      ownerId: user.id,
+    };
+
+    const newTrip = await this.prisma.trip.create({ data });
+    const currentTrips = await this.getTripsByUsername(user.username, token);
+
+    currentTrips?.push(newTrip);
+
+    await this.redisService.repopulate(
+      `${user.username}_${user.id}`,
+      currentTrips
+    );
+    return newTrip;
   }
 
   /**

@@ -11,6 +11,7 @@ import Button from "../../../components/classic/button";
 import ClientInputField from "../../../components/client/form/client-input-form";
 import SuccessMessage from "../../../components/client/form/success-message";
 import { axiosClient } from "../../../service/axios.service";
+import { getCookie, TOKEN_COOKIE_NAME } from "../../../service/cookie.service";
 
 type NewTrip = {
   name: string;
